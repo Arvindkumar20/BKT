@@ -1,29 +1,39 @@
 import React, { useState } from "react";
-
-export default function Form() {
+export default function Form(props) {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const [prompt, setprompt] = useState("");
+  const [url, setUrl] = useState("");
+  const handlepromptChange = (e) => {
+    setprompt(e.target.value);
   };
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+
+  const handleUrlChange = (e) => {
+    setUrl(e.target.value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.setCardData({
+      url: url,
+      name: name,
+      prompt: prompt,
+    });
+    setName("");
+    setUrl("");
+    setprompt("");
+  };
 
   return (
     <div className="flex items-center justify-center md:w-1/3 w-full mx-auto mt-[8%]">
       <form
-        action=""
         className="flex flex-col items-center justify-center rounded-md py-10 px-5   gap-5  shadow-md bg-gray-50 w-full"
+        onSubmit={handleSubmit}
       >
         <h1 className=" text-xl font-bold text-center mb-5 text-black">
-          Sign Up Page
+          Prompt page
         </h1>
         <input
           type="text"
@@ -32,24 +42,33 @@ export default function Form() {
           className="py-3 w-full px-1 outline-none border rounded"
           onChange={handleNameChange}
           value={name}
+          required
+          title="enter your"
         />
         <input
-          type="email"
-          name="email"
+          type="text"
+          name="url"
           placeholder="Enter your name ..."
           className="py-3 w-full px-1 outline-none border rounded"
-          onChange={handleEmailChange}
-          value={email}
+          onChange={handleUrlChange}
+          value={url}
+          required
+          title="enter your"
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter your name ..."
+        <textarea
+          type="prompt"
+          name="peompt"
+          placeholder="Enter your prompt ..."
           className="py-3 w-full px-1 outline-none border rounded"
-          onChange={handlePasswordChange}
-          value={password}
+          onChange={handlepromptChange}
+          value={prompt}
+          required
+          title="enter your"
         />
-        <button className="bg-blue-500 w-1/2 py-3 rounded-md">SignUp</button>
+
+        <button className="bg-blue-500 w-1/2 py-3 rounded-md cursor-pointer">
+          Generate
+        </button>
       </form>
     </div>
   );
