@@ -1,8 +1,8 @@
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import img from "../assets/react.svg";
 
 export default function Navbar() {
-  // const url = useLocation();
+  const url = useLocation();
   // const {id}=useParams();
   return (
     <div>
@@ -12,19 +12,19 @@ export default function Navbar() {
         </div>
         <span className="text-orange-400">Arvind Kumar</span>
 
-        {/* {url.pathname == "/" ? (
-          <a href="/history">
+        {url.pathname == "/" ? (
+          <Link to="/history">
             <button className="bg-blue-500 py-2 px-5 rounded-md cursor-pointer hover:bg-red-500 ">
               History
             </button>
-          </a>
+          </Link>
         ) : (
-          <a href="/">
+          <Link to="/">
             <button className="bg-blue-500 py-2 px-5 rounded-md cursor-pointer hover:bg-red-500 ">
               Generate
             </button>
-          </a>
-        )} */}
+          </Link>
+        )}
 
         {/* {
           num==4?even:odd
