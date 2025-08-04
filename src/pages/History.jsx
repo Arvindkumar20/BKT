@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { data } from "../data/data";
 import Card from "../components/Card";
@@ -7,26 +7,29 @@ export default function History() {
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-    searchData();
   };
   const [filteredData, setFilteredData] = useState([]);
 
-  const searchData = () => {
-    const applyFilter =
-      searchTerm != ""
-        ? data.filter((image) => {
-            return (
-              image.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              image.prompt.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-          })
-        : data;
+  const searchData = useCallback(() => {
+    if (searchTerm == "" || searchTerm == null) {
+      setFilteredData(data);
+      return;
+    }
+    const searchValue = searchTerm.toLowerCase();
+    const applyFilter = data?.filter((image) => {
+      const name = image.name.toLowerCase();
+      const prompt = image.prompt.toLowerCase();
+      return (
+        name.includes(searchValue.trim()) || prompt.includes(searchValue.trim())
+      );
+    });
+
     console.log(applyFilter);
     setFilteredData(applyFilter);
-  };
+  }, [searchTerm]);
   useEffect(() => {
     searchData();
-  }, []);
+  }, [searchTerm]);
 
   return (
     <div className="my-10 flex flex-col items-center justify-center">
@@ -43,13 +46,13 @@ export default function History() {
         />
       </section>
       <ul className="flex items-center justify-center gap-5 flex-wrap">
-        {filteredData?.length > 1 &&
+        {filteredData?.length >= 1 &&
           filteredData?.map((image, index) => {
             return (
               <li key={index}>
                 <Card
                   cardData={image}
-                  className="flex items-center justify-center w-[300px] mx-auto mt-[8%] h-max-content"
+                  className="flex items-center justify-center min-w-[300px] w-[300px] mx-auto mt-[8%] h-max-content"
                   ImageClass={"w-[300px] h-[300px] "}
                 />
               </li>
