@@ -27,7 +27,7 @@ export default function Form(props) {
   };
 
   return (
-    <div className="flex items-center justify-center md:w-1/3 w-full mx-auto mt-[8%]">
+    <div className="flex items-center justify-center md:w-[350px] lg:w-1/3 w-full mx-auto mt-[8%]">
       <form
         className="flex flex-col items-center justify-center rounded-md py-10 px-5   gap-5  shadow-md bg-gray-50 w-full"
         onSubmit={handleSubmit}

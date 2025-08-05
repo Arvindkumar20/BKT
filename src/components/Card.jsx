@@ -1,6 +1,10 @@
 import React from "react";
 import { FaDownload } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 export default function Card(props) {
+
+  const url=useLocation();
+
   const handleDownLoad = (url) => {
     const link = document.createElement("a");
     link.href = url;
@@ -12,16 +16,18 @@ export default function Card(props) {
     return document.removeChild(link);
   };
   return (
-    <section className={props.className}>
-      <div className="flex flex-col items-center justify-center rounded-md py-10 px-5   gap-5  shadow-md bg-gray-50 w-full">
+    <section className={props.className }>
+      <div className={props.classNameForContainer}>
         <div className={props.ImageClass}>
           <img
             src={props.cardData.url}
             alt="card image"
-            className="w-full h-full object-center"
+            className="w-full h-full object-center rounded"
           />
         </div>
-        <section className="flex items-start justify-start gap-5 max-w-max-content">
+        <section className="flex items-start justify-between gap-5 max-w-max-content " style={{
+          padding:`0px ${url.pathname=="/history"?"0px":"10px"}`
+        }}>
           <div>
           <span className="text-md font-normal">Name : {props.cardData.name}</span>
           <br />
