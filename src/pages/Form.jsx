@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { ImSpinner2 } from "react-icons/im";
 export default function Form(props) {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [prompt, setprompt] = useState("");
   const [url, setUrl] = useState("");
@@ -16,6 +18,7 @@ export default function Form(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     props.setCardData({
       url: url,
       name: name,
@@ -24,6 +27,7 @@ export default function Form(props) {
     setName("");
     setUrl("");
     setprompt("");
+    setLoading(false);
   };
 
   return (
@@ -55,6 +59,8 @@ export default function Form(props) {
           required
           title="enter your"
         />
+        
+      
         <textarea
           type="prompt"
           name="peompt"
@@ -66,8 +72,15 @@ export default function Form(props) {
           title="enter your"
         />
 
-        <button className="bg-blue-500 w-1/2 py-3 rounded-md cursor-pointer">
-          Generate
+        <button className="bg-blue-500 w-1/2 py-3 rounded-md cursor-pointer text-center flex items-center justify-center">
+          {loading ? (
+            <ImSpinner2
+              className="text-white   custom-animation animate-spin text-center"
+              size={25}
+            />
+          ) : (
+            "Generate"
+          )}
         </button>
       </form>
     </div>
