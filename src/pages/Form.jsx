@@ -1,10 +1,29 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 export default function Form(props) {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [prompt, setprompt] = useState("");
-  const [url, setUrl] = useState("");
+  // const [url, setUrl] = useState("");
+
+  const loadImage = async () => {
+    // let res;
+    try {
+      let res = await axios.post(
+        "http://localhost:3000/api/image/generate-image",
+        { name, prompt }
+      );
+      if (!res) {
+        console.log("image not generated on frontnd");
+      }
+      console.log(res);
+      props.setCardData(res.data.image)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handlepromptChange = (e) => {
     setprompt(e.target.value);
   };
@@ -12,20 +31,16 @@ export default function Form(props) {
     setName(e.target.value);
   };
 
-  const handleUrlChange = (e) => {
-    setUrl(e.target.value);
-  };
+  // const handleUrlChange = (e) => {
+  //   setUrl(e.target.value);
+  // };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    props.setCardData({
-      url: url,
-      name: name,
-      prompt: prompt,
-    });
+    await loadImage();
     setName("");
-    setUrl("");
+    // setUrl("");
     setprompt("");
     setLoading(false);
   };
@@ -49,7 +64,7 @@ export default function Form(props) {
           required
           title="enter your"
         />
-        <input
+        {/* <input
           type="text"
           name="url"
           placeholder="Enter your name ..."
@@ -58,9 +73,8 @@ export default function Form(props) {
           value={url}
           required
           title="enter your"
-        />
-        
-      
+        /> */}
+
         <textarea
           type="prompt"
           name="peompt"
