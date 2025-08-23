@@ -11,7 +11,7 @@ export default function Form(props) {
     // let res;
     try {
       let res = await axios.post(
-        "http://localhost:3000/api/image/generate-image",
+        "https://bkt-image-generator.onrender.com/api/image/generate-image",
         { name, prompt }
       );
       if (!res) {

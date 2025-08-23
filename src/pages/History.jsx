@@ -36,7 +36,7 @@ export default function History() {
   const loadImages = async () => {
     try {
       const images = await axios.get(
-        "http://localhost:3000/api/image/get-images"
+        "https://bkt-image-generator.onrender.com/api/image/get-images"
       );
       console.log(images);
       setFilteredData(images.data.images);

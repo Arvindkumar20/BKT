@@ -27,7 +27,7 @@ export default function Card(props) {
   const handleDelete = async (id) => {
     setDeleting(true);
     try {
-      await axios.delete(`http://localhost:3000/api/image/delete-image/${id}`);
+      await axios.delete(`https://bkt-image-generator.onrender.com/api/image/delete-image/${id}`);
       props.setIsDeleted(true);
       setDeleting(false);
     } catch (error) {
