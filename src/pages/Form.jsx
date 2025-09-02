@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 export default function Form(props) {
-  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [prompt, setprompt] = useState("");
   // const [url, setUrl] = useState("");
@@ -11,15 +10,18 @@ export default function Form(props) {
     // let res;
     try {
       let res = await axios.post(
-        "https://bkt-image-generator.onrender.com/api/image/generate-image",
+        "http://localhost:3000/api/image/generate-image",
         { name, prompt }
       );
       if (!res) {
         console.log("image not generated on frontnd");
       }
       console.log(res);
-      props.setCardData(res.data.image)
+      props.setCardData(res.data.image);
+      props.setLoading(false);
     } catch (error) {
+      props.setLoading(false);
+
       console.log(error);
     }
   };
@@ -37,12 +39,11 @@ export default function Form(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    props.setLoading(true);
     await loadImage();
     setName("");
     // setUrl("");
     setprompt("");
-    setLoading(false);
   };
 
   return (
@@ -87,7 +88,7 @@ export default function Form(props) {
         />
 
         <button className="bg-blue-500 w-1/2 py-3 rounded-md cursor-pointer text-center flex items-center justify-center">
-          {loading ? (
+          {props.loading ? (
             <ImSpinner2
               className="text-white   custom-animation animate-spin text-center"
               size={25}

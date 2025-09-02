@@ -7,6 +7,7 @@ import axios from "axios";
 export default function History() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDeleted, setIsDeleted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -36,11 +37,14 @@ export default function History() {
   const loadImages = async () => {
     try {
       const images = await axios.get(
-        "https://bkt-image-generator.onrender.com/api/image/get-images"
+        "http://localhost:3000/api/image/get-images"
       );
       console.log(images);
       setFilteredData(images.data.images);
+      setIsDeleted(false);
     } catch (error) {
+      setIsDeleted(false);
+
       console.log(error);
     }
   };
@@ -72,6 +76,8 @@ export default function History() {
                   cardData={image}
                   setIsDeleted={setIsDeleted}
                   isDeleted={isDeleted}
+              
+                  setLoading={setLoading}
                   className="flex items-center justify-center min-w-[400px] w-[400px] mx-auto mt-[8%] h-[500px]"
                   classNameForContainer="flex flex-col items-center justify-center rounded-md pb-5 px-5 gap-5  shadow-md bg-gray-50 w-full h-full"
                   ImageClass={"w-[400px] h-full "}

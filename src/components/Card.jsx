@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import { ImSpinner2 } from "react-icons/im";
+import { useEffect } from "react";
 
 export default function Card(props) {
   const [deleting, setDeleting] = useState(false);
@@ -13,29 +14,45 @@ export default function Card(props) {
     return newDate.toLocaleString();
   };
   console.log(CalcuateDate("2025-08-23T05:17:02.268Z"));
-  const handleDownLoad = (url) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = url;
-    link.click();
+  const handleDownLoad = async (url, filename = "image.jpg") => {
+    try {
+      // Step 1: fetch file from URL
+      const response = await fetch(url);
+      const blob = await response.blob();
 
-    document.body.appendChild(link);
+      // Step 2: create temporary object URL
+      const objectUrl = URL.createObjectURL(blob);
 
-    return document.removeChild(link);
+      // Step 3: create link & download
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+
+      // Step 4: cleanup
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error("Download failed", error);
+    }
   };
 
   const handleDelete = async (id) => {
     setDeleting(true);
     try {
-      await axios.delete(`https://bkt-image-generator.onrender.com/api/image/delete-image/${id}`);
+      await axios.delete(`http://localhost:3000/api/image/delete-image/${id}`);
       props.setIsDeleted(true);
       setDeleting(false);
     } catch (error) {
+      props.setIsDeleted(false);
       console.log(error);
       setDeleting(false);
     }
   };
-
+  useEffect(() => {
+    props.setLoading(false);
+  }, []);
   return (
     <section className={props.className}>
       <div className={props.classNameForContainer}>
